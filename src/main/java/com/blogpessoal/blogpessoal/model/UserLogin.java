@@ -17,6 +17,12 @@ public class UserLogin {
 
 	public UserLogin(Long id, String nome, String usuario, String senha, String foto,
 			String token) {
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha=senha;
+		this.foto = foto;
+		this.token = token;
 		// TODO Auto-generated constructor stub
 	}
 	

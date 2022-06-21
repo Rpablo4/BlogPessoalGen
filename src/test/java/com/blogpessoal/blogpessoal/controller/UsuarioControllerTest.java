@@ -48,7 +48,7 @@ public class UsuarioControllerTest {
 		/**
 		 * Apaga todos os registros do banco de dados antes de iniciar os testes
 		 */
-		
+		usuarioRepository.deleteAllInBatch();
 		usuarioRepository.deleteAll();
 	}
 	@Test
@@ -116,7 +116,8 @@ public class UsuarioControllerTest {
 		 */
 		
 		ResponseEntity<UsuarioModel> corpoResposta = testRestTemplate
-				.exchange("/usuarios/cadastrar", HttpMethod.POST, corpoRequisicao, UsuarioModel.class);
+				.withBasicAuth("root", "root")
+				.exchange("/usuario/cadastrar", HttpMethod.POST, corpoRequisicao, UsuarioModel.class);
 		
 		/**
 		 * Verifica se a requisição retornou o Status Code BAD_REQUEST (400), que indica que o usuário já existe no
@@ -167,7 +168,7 @@ public class UsuarioControllerTest {
 		 */
 		ResponseEntity<UsuarioModel> corpoResposta= testRestTemplate
 				.withBasicAuth("root", "root")
-				.exchange("/usuarios/atualizar", HttpMethod.PUT, corpoRequisicao, UsuarioModel.class);
+				.exchange("/usuario/atualizar", HttpMethod.PUT, corpoRequisicao, UsuarioModel.class);
 		
 		/**
 		 *  Verifica se a requisição retornou o Status Code OK (200) 
@@ -198,7 +199,7 @@ public class UsuarioControllerTest {
 		 * Cria um Objeto da Classe ResponseEntity (corpoResposta), que receberá a Resposta da Requisição que será 
 		 * enviada pelo Objeto da Classe TestRestTemplate.
 		 * 
-		 * Na requisição HTTP será enviada a URL do recurso (/usuarios/all), o verbo (GET), a entidade
+		 * Na requisição HTTP será enviada a URL do recurso (/usuario/all), o verbo (GET), a entidade
 		 * HTTP será nula (Requisição GET não envia nada no Corpo da Requisição) e a Classe de retorno da Resposta 
 		 * (String), porquê a lista de Usuários será do tipo String.
 		 * 
@@ -210,8 +211,8 @@ public class UsuarioControllerTest {
 		 */
 		ResponseEntity<String> resposta = testRestTemplate
 				.withBasicAuth("root","root")
-				.exchange("usuarios/all", HttpMethod.GET, null, String.class);
-		/**
+				.exchange("usuario/all", HttpMethod.GET,null,String.class);
+		/**.exchange("usuario/all", HttpMethod.GET, null,String.class);
 		 *  Verifica se a requisição retornou o Status Code OK (200) 
 		 * Se for verdadeira, o teste passa, se não, o teste falha.
 		 */
@@ -248,7 +249,7 @@ public class UsuarioControllerTest {
 		 */
 		ResponseEntity<String> resposta = testRestTemplate
 				.withBasicAuth("root", "root")
-				.exchange("/usuarios/" + usuarioBusca.get(), HttpMethod.GET, null, String.class);
+				.exchange("/usuario/" + usuarioBusca.get().getId(), HttpMethod.GET, null, String.class);
 		/**
 		 *  Verifica se a requisição retornou o Status Code OK (200) 
 		 * Se for verdadeira, o teste passa, se não, o teste falha.
@@ -269,7 +270,7 @@ public class UsuarioControllerTest {
 		 * Cria um Objeto da Classe UsuarioLogin dentro de um Objeto da Classe HttpEntity (Entidade HTTP).
 		 * O Objeto desta Classe será preenchido apenas como o usuário e senha do usuário criado acima.
 		 */
-		HttpEntity<UserLogin> corpoRequisicao = new HttpEntity<UserLogin>(new UserLogin(0L,"Maria da Silva", "maria_silva@email.com.br", "123456789","",""));
+		HttpEntity<UserLogin> corpoRequisicao = new HttpEntity<UserLogin>(new UserLogin(0L,"", "maria_silva@email.com.br", "123456789","",""));
 		/**
 		 * Cria um Objeto da Classe ResponseEntity (corpoResposta), que receberá a Resposta da Requisição que será 
 		 * enviada pelo Objeto da Classe TestRestTemplate.
@@ -278,7 +279,7 @@ public class UsuarioControllerTest {
 		 * HTTP criada acima (corpoRequisicao) e a Classe de retornos da Resposta (UsuarioLogin).
 		 */
 		ResponseEntity<UserLogin> corpoResposta = testRestTemplate
-				.exchange("/usuarios/logar", HttpMethod.POST, corpoRequisicao, UserLogin.class);
+				.exchange("/usuario/logar", HttpMethod.POST, corpoRequisicao, UserLogin.class);
 		/**
 		 *  Verifica se a requisição retornou o Status Code OK (200) 
 		 * Se for verdadeira, o teste passa, se não, o teste falha.
